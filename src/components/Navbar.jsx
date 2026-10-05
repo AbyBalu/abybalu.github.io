@@ -6,12 +6,27 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
+  const [atBottom, setAtBottom] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      // The footer section's top never crosses the spy offset, so detect page end directly.
+      setAtBottom(
+        window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 2,
+      );
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
+
+  const activeLink = atBottom ? navLinks[navLinks.length - 1].to : active;
 
   return (
     <div className="fixed top-4 left-0 right-0 z-50 px-5 flex justify-center">
@@ -47,7 +62,7 @@ export default function Navbar() {
                 spy
                 onSetActive={() => setActive(link.to)}
                 className={`nav-underline cursor-pointer text-sm font-medium text-muted hover:text-ink transition-colors ${
-                  active === link.to ? "active text-ink" : ""
+                  activeLink === link.to ? "active text-ink" : ""
                 }`}
               >
                 {link.label}
