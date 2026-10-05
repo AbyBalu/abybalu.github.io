@@ -11,10 +11,10 @@ import {
 import { profile, navLinks, footerServices } from "../data/resumeData";
 
 const socialIcons = [
-  { href: profile.social.twitter, Icon: FaTwitter },
-  { href: profile.social.facebook, Icon: FaFacebookF },
-  { href: profile.social.instagram, Icon: FaInstagram },
   { href: profile.social.linkedin, Icon: FaLinkedinIn },
+  { href: profile.social.instagram, Icon: FaInstagram },
+  { href: profile.social.facebook, Icon: FaFacebookF },
+  { href: profile.social.twitter, Icon: FaTwitter },
 ];
 
 export default function Footer() {
